@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		9335EA6621E7D3B700A50798 /* sleepDetectorLib.h in Headers */ = {isa = PBXBuildFile; fileRef = 9335EA6521E7D3B700A50798 /* sleepDetectorLib.h */; };
 		9335EA6821E7D3B700A50798 /* sleepDetectorLib.m in Sources */ = {isa = PBXBuildFile; fileRef = 9335EA6721E7D3B700A50798 /* sleepDetectorLib.m */; };
+		9335EA6F21E924B900A50798 /* Client.m in Sources */ = {isa = PBXBuildFile; fileRef = 9335EA6E21E924B900A50798 /* Client.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9335EA6221E7D3B700A50798 /* libsleepDetectorLib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libsleepDetectorLib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		9335EA6521E7D3B700A50798 /* sleepDetectorLib.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sleepDetectorLib.h; sourceTree = "<group>"; };
 		9335EA6721E7D3B700A50798 /* sleepDetectorLib.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = sleepDetectorLib.m; sourceTree = "<group>"; };
+		9335EA6E21E924B900A50798 /* Client.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Client.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +51,7 @@
 			children = (
 				9335EA6521E7D3B700A50798 /* sleepDetectorLib.h */,
 				9335EA6721E7D3B700A50798 /* sleepDetectorLib.m */,
+				9335EA6E21E924B900A50798 /* Client.m */,
 			);
 			path = sleepDetectorLib;
 			sourceTree = "<group>";
@@ -120,6 +123,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9335EA6F21E924B900A50798 /* Client.m in Sources */,
 				9335EA6821E7D3B700A50798 /* sleepDetectorLib.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -243,6 +247,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -255,6 +260,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
