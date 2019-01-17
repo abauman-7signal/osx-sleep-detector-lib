@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@interface sleepDetectorLib : NSObject
+extern void logIt(void);
 
+@protocol SleepDetectorLib
+- (void)logger;
+@end
+
+@interface SleepDetectorLib : NSObject {
+}
+- (void)logger;
 @end
