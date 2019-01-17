@@ -33,5 +33,5 @@ function buildAndRunForObjectiveCTestClient() {
   runObjectiveCTestClient
 }
 
-# buildAndRunForCTestClient
-buildAndRunForObjectiveCTestClient
+buildAndRunForCTestClient
+# buildAndRunForObjectiveCTestClient
