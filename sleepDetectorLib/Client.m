@@ -12,8 +12,9 @@
 #import "sleepDetectorLib.h"
 
 int main() {
+    char *libName = "./libsleepDetectorLib.dylib";
     @autoreleasepool {
-        void* lib_handle = dlopen("./libsleepDetectorLib.dylib", RTLD_LOCAL);
+        void* lib_handle = dlopen(libName, RTLD_LOCAL);
         if (!lib_handle) {
             NSLog(@"[%s] main: Unable to open library: %s\n", __FILE__, dlerror());
             exit(EXIT_FAILURE);
@@ -26,7 +27,8 @@ int main() {
         }
         
         NSObject<SleepDetectorLib>* sleepDetectorLib = [SleepDetectorLib_class new];
-        [sleepDetectorLib logger];
+        NSString *aMessage = @"Objective-C client finished loading library";
+        [sleepDetectorLib logger:[NSString stringWithFormat:@"%@ %@", aMessage, @(libName)]];
         
         if (dlclose(lib_handle) != 0) {
             NSLog(@"[%s] Unable to close library; %s\n", __FILE__, dlerror());

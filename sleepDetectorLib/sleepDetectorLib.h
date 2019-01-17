@@ -8,13 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-extern void logIt(void);
+extern void logIt(char *);
 
 @protocol SleepDetectorLib
-- (void)logger;
+- (void)logger:(NSString *) message;
 @end
 
-@interface SleepDetectorLib : NSObject {
-}
-- (void)logger;
+@interface SleepDetectorLib : NSObject
+- (void)logger:(NSString *) message;
 @end

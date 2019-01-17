@@ -17,9 +17,10 @@ void loadSingleton(void) {
     }
 }
 
-void logIt(void) {
+void logIt(char *message) {
     loadSingleton();
-    [refToSelf logger];
+    NSString *messageObjC = @(message);
+    [refToSelf logger:messageObjC];
 }
 
 @implementation SleepDetectorLib
@@ -28,9 +29,7 @@ void logIt(void) {
          return self;
      }
     
-     - (void)logger {
-        NSString *message = @"Hello world from Objective C library\n";
-        
+    - (void)logger:(NSString *) message {
         NSLog(@"%@", message);
         
         [[NSFileManager defaultManager] createFileAtPath:@"./log" contents:nil attributes:nil];
