@@ -7,7 +7,6 @@
 //
 
 #import "sleepDetectorLib.h"
-#import "NotificationMonitor.h"
 #import <objc/runtime.h>
 
 SleepDetectorLib *refToSelf = NULL;
