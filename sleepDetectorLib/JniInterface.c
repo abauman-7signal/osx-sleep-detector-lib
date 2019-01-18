@@ -36,11 +36,11 @@ void *linkToFunction(void *libHandle, char *nameOfFunction) {
 }
 
 JNIEXPORT void JNICALL
-Java_JniInterface_log(JNIEnv *jniEnv, jobject callbackObject) {
+Java_JniInterface_log(JNIEnv *jniEnv, jobject callbackObject, jstring message) {
   char libName[] = "./libsleepDetectorLib.dylib";
   void *libHandle = openDynamicLib(&libName);
 
-  void (*log)(char *) = linkToFunction(libHandle, LOG_FUNCTION);
+  void (*log)(const char *) = linkToFunction(libHandle, LOG_FUNCTION);
 
   if (log) {
     printf("[%s] established link to %s()\n", __FILE__, LOG_FUNCTION);
@@ -51,7 +51,10 @@ Java_JniInterface_log(JNIEnv *jniEnv, jobject callbackObject) {
   char buf[1025];
   snprintf(buf, sizeof(buf), "%s %s", "JNI Interface finished loading library ", libName);
 
-  log(buf);
+  const char *nativeMessage = (*jniEnv)->GetStringUTFChars(jniEnv, message, 0);
+  log(nativeMessage);
+
+  (*jniEnv)->ReleaseStringUTFChars(jniEnv, message, nativeMessage);
 
   closeDynamicLib(libHandle);
 }

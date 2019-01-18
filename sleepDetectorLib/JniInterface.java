@@ -1,5 +1,5 @@
 public class JniInterface {
 
-  public native void log();
-  
+  public native void log(String message);
+
 }
