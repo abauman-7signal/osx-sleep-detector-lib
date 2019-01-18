@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern void logIt(char *);
+extern int getScreenSaverState(void);
 
 @protocol SleepDetectorLib
 - (void)logger:(NSString *) message;
