@@ -51,7 +51,6 @@ int main() {
   snprintf(buf, sizeof(buf), "%s %s", "C client finished loading library ", libName);
 
   log(buf);
-  log("");
 
   closeDynamicLib(libHandle);
 }
