@@ -31,8 +31,5 @@ void logIt(char *message) {
     
     - (void)logger:(NSString *) message {
         NSLog(@"%@", message);
-        
-        [[NSFileManager defaultManager] createFileAtPath:@"./log" contents:nil attributes:nil];
-        [message writeToFile:@"./log" atomically:YES encoding:NSUTF8StringEncoding error:nil];
     }
 @end
