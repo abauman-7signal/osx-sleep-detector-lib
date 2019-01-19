@@ -1,2 +1,3 @@
 # tells linker what to export
 _logIt
+_getScreenSaverState
