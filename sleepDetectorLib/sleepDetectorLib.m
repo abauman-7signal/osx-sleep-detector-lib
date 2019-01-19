@@ -9,6 +9,9 @@
 #import "sleepDetectorLib.h"
 #import <objc/runtime.h>
 
+#define SCREENSAVER_STARTED 1
+#define SCREENSAVER_LOCKED  2
+
 SleepDetectorLib *refToSelf = NULL;
 int screenSaverSate = 0;
 
@@ -30,6 +33,11 @@ int getScreenSaverState(void) {
 }
 
 @implementation SleepDetectorLib
+NSString *screensaverDidStart = @"com.apple.screensaver.didstart";
+NSString *screensaverDidStop = @"com.apple.screensaver.didstop";
+NSString *screenIsLocked = @"com.apple.screenIsLocked";
+NSString *screenIsUnlocked = @"com.apple.screenIsUnlocked";
+
      - (id) init {
          self = [super init];
          NSDistributedNotificationCenter * center
@@ -37,22 +45,22 @@ int getScreenSaverState(void) {
          
          [center addObserver: self
                     selector: @selector(receive:)
-                        name: @"com.apple.screensaver.didstart"
+                        name: screensaverDidStart
                       object: nil
           ];
          [center addObserver: self
                     selector: @selector(receive:)
-                        name: @"com.apple.screensaver.didstop"
+                        name: screensaverDidStop
                       object: nil
           ];
          [center addObserver: self
                     selector: @selector(receive:)
-                        name: @"com.apple.screenIsLocked"
+                        name: screenIsLocked
                       object: nil
           ];
          [center addObserver: self
                     selector: @selector(receive:)
-                        name: @"com.apple.screenIsUnlocked"
+                        name: screenIsUnlocked
                       object: nil
           ];
 //         printf("running loop... (^C to quit)");
@@ -62,7 +70,25 @@ int getScreenSaverState(void) {
      }
     
     - (void) receive: (NSNotification*) notification {
-        printf("%s\n", [[notification name] UTF8String] );
+        NSString *message = [notification name];
+        printf("%s\n", [message UTF8String] );
+        if ([message isEqualToString:screensaverDidStart]) {
+//            printf("%i\n", SCREENSAVER_STARTED);
+            screenSaverSate = screenSaverSate | SCREENSAVER_STARTED;
+        }
+        if ([message isEqualToString:screensaverDidStop]) {
+//            printf("%i\n", ~SCREENSAVER_STARTED);
+            screenSaverSate = screenSaverSate & ~SCREENSAVER_STARTED;
+        }
+        if ([message isEqualToString:screenIsLocked]) {
+//            printf("%i\n", SCREENSAVER_LOCKED);
+            screenSaverSate = screenSaverSate | SCREENSAVER_LOCKED;
+        }
+        if ([message isEqualToString:screenIsUnlocked]) {
+//            printf("%i\n", ~SCREENSAVER_LOCKED);
+            screenSaverSate = screenSaverSate & ~SCREENSAVER_LOCKED;
+        }
+        printf("screenSaverState: %i\n", screenSaverSate);
     }
 
     - (void)logger:(NSString *) message {
