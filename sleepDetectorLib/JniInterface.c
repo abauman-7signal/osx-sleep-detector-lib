@@ -44,13 +44,13 @@ Java_JniInterface_log(JNIEnv *jniEnv, jobject callbackObject, jstring message) {
   void (*log)(const char *) = linkToFunction(libHandle, LOG_FUNCTION);
 
   if (log) {
-    printf("[%s] established link to %s()\n", __FILE__, LOG_FUNCTION);
+    // printf("[%s] established link to %s()\n", __FILE__, LOG_FUNCTION);
   } else {
     printf("[%s] did not establish link to %s()\n", __FILE__, LOG_FUNCTION);
   }
 
-  char buf[1025];
-  snprintf(buf, sizeof(buf), "%s %s", "JNI Interface finished loading library ", libName);
+  // char buf[1025];
+  // snprintf(buf, sizeof(buf), "%s %s", "JNI Interface finished loading library ", libName);
 
   const char *nativeMessage = (*jniEnv)->GetStringUTFChars(jniEnv, message, 0);
   log(nativeMessage);
