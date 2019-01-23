@@ -8,12 +8,14 @@
 
 #import "sleepDetectorLib.h"
 #import <objc/runtime.h>
+#import <AppKit/Appkit.h>
 
 #define SCREENSAVER_STARTED 1
 #define SCREENSAVER_LOCKED  2
+#define SCREEN_DID_SLEEP     4
 
 SleepDetectorLib *refToSelf = NULL;
-int screenSaverSate = 0;
+int screenSaverState = 0;
 
 void loadSingleton(void) {
     if (refToSelf == NULL) {
@@ -29,7 +31,7 @@ void logIt(char *message) {
 
 int getScreenSaverState(void) {
     loadSingleton();
-    return screenSaverSate;
+    return screenSaverState;
 }
 
 @implementation SleepDetectorLib
@@ -40,55 +42,82 @@ NSString *screenIsUnlocked = @"com.apple.screenIsUnlocked";
 
      - (id) init {
          self = [super init];
-         NSDistributedNotificationCenter * center
-         = [NSDistributedNotificationCenter defaultCenter];
+         NSWorkspace *workspaceCenter = [NSWorkspace sharedWorkspace];
+         NSNotificationCenter *notificationCenter = workspaceCenter.notificationCenter;
          
-         [center addObserver: self
-                    selector: @selector(receive:)
-                        name: screensaverDidStart
-                      object: nil
-          ];
-         [center addObserver: self
-                    selector: @selector(receive:)
-                        name: screensaverDidStop
-                      object: nil
-          ];
-         [center addObserver: self
-                    selector: @selector(receive:)
-                        name: screenIsLocked
-                      object: nil
-          ];
-         [center addObserver: self
-                    selector: @selector(receive:)
-                        name: screenIsUnlocked
-                      object: nil
-          ];
+         [notificationCenter addObserver:self
+                                selector:@selector(screenDidSleep:)
+                                    name:NSWorkspaceScreensDidSleepNotification
+                                  object:nil];
+         [notificationCenter addObserver:self
+                                selector:@selector(screenDidWake:)
+                                    name:NSWorkspaceScreensDidWakeNotification
+                                  object:nil];
+
+         
+//         NSDistributedNotificationCenter * center
+//         = [NSDistributedNotificationCenter defaultCenter];
+//
+//         [center addObserver: self
+//                    selector: @selector(receive:)
+//                        name: screensaverDidStart
+//                      object: nil
+//          ];
+//         [center addObserver: self
+//                    selector: @selector(receive:)
+//                        name: screensaverDidStop
+//                      object: nil
+//          ];
+//         [center addObserver: self
+//                    selector: @selector(receive:)
+//                        name: screenIsLocked
+//                      object: nil
+//          ];
+//         [center addObserver: self
+//                    selector: @selector(receive:)
+//                        name: screenIsUnlocked
+//                      object: nil
+//          ];
 //         printf("running loop... (^C to quit)");
 //         [[NSRunLoop currentRunLoop] run];
 //         printf("...ending loop");
          return self;
      }
-    
+
+    - (void) screenDidSleep: (NSNotification*) notification {
+        NSString *message = [notification name];
+        NSLog(@"%s\n", [message UTF8String]);
+        screenSaverState = screenSaverState | SCREEN_DID_SLEEP;
+        NSLog(@"screenSaverState: %i\n", screenSaverState);
+    }
+
+    - (void) screenDidWake: (NSNotification*) notification {
+        NSString *message = [notification name];
+        NSLog(@"%s\n", [message UTF8String]);
+        screenSaverState = screenSaverState & ~SCREEN_DID_SLEEP;
+        NSLog(@"screenSaverState: %i\n", screenSaverState);
+    }
+
     - (void) receive: (NSNotification*) notification {
         NSString *message = [notification name];
-        printf("%s\n", [message UTF8String] );
+        NSLog(@"%s\n", [message UTF8String] );
         if ([message isEqualToString:screensaverDidStart]) {
 //            printf("%i\n", SCREENSAVER_STARTED);
-            screenSaverSate = screenSaverSate | SCREENSAVER_STARTED;
+            screenSaverState = screenSaverState | SCREENSAVER_STARTED;
         }
         if ([message isEqualToString:screensaverDidStop]) {
 //            printf("%i\n", ~SCREENSAVER_STARTED);
-            screenSaverSate = screenSaverSate & ~SCREENSAVER_STARTED;
+            screenSaverState = screenSaverState & ~SCREENSAVER_STARTED;
         }
         if ([message isEqualToString:screenIsLocked]) {
 //            printf("%i\n", SCREENSAVER_LOCKED);
-            screenSaverSate = screenSaverSate | SCREENSAVER_LOCKED;
+            screenSaverState = screenSaverState | SCREENSAVER_LOCKED;
         }
         if ([message isEqualToString:screenIsUnlocked]) {
 //            printf("%i\n", ~SCREENSAVER_LOCKED);
-            screenSaverSate = screenSaverSate & ~SCREENSAVER_LOCKED;
+            screenSaverState = screenSaverState & ~SCREENSAVER_LOCKED;
         }
-        printf("screenSaverState: %i\n", screenSaverSate);
+        NSLog(@"screenSaverState: %i\n", screenSaverState);
     }
 
     - (void)logger:(NSString *) message {
