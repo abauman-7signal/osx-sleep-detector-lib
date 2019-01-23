@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.sevensignal.sleepdetector</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+    	<key>PIDFILE</key>
+    	<string>/var/run/com.sevensignal.sleepdetector.pid</string>
+    </dict>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/bash</string>
+      <string>-c</string>
+      <string>../runtime/bin/java TestJniInterface</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/> <!-- run the program at login -->
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+    <key>ExitTimeOut</key>
+    <integer>30</integer>
+    <key>StandardOutPath</key>
+    <string>/Library/Logs/7signal/sleepdetector.stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Library/Logs/7signal/sleepdetector.stderr.log</string>
+    <key>WorkingDirectory</key>
+    <string>/Library/Application Support/7signal/sleepdetector/</string>
+	  <key>ProcessType</key>
+	  <string>Interactive</string>
+  </dict>
+</plist>
